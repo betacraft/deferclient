@@ -2,6 +2,7 @@ package deferstats
 
 import (
 	"fmt"
+	"github.com/go-zoo/bone"
 	"math"
 	"math/rand"
 	"net/http"
@@ -15,6 +16,7 @@ import (
 var (
 	// curlist holds an array of DeferHTTPs (uri && latency)
 	curlist = &deferHTTPList{}
+	boneMux *bone.Mux
 )
 
 // HTTPPercentile is a single instance of the set of a http query percentiles
@@ -329,6 +331,6 @@ func (c *Client) BeforeRequest(w http.ResponseWriter, r *http.Request) (
 // AfterRequest is called after request processing in handler
 func (c *Client) AfterRequest(startTime time.Time, tracer *ResponseTracer, r *http.Request,
 	headers map[string]string, status_code int, isproblem bool) {
-	appendHTTP(startTime, r.URL.Path, r.Method, status_code, tracer.SpanId,
+	appendHTTP(startTime, r.Method + " "+ boneMux.GetRequestRoute(r), r.Method, status_code, tracer.SpanId,
 		tracer.ParentSpanId, isproblem, headers)
 }

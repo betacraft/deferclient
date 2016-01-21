@@ -90,7 +90,7 @@ func (c *Client) ContextBeforeRequest(w http.ResponseWriter, r *http.Request) (
 // ContextAfterRequest is called after request processing in context handler
 func (c *Client) ContextAfterRequest(startTime time.Time, tracer *ContextTracer, r *http.Request,
 	headers map[string]string, status_code int, isproblem bool) {
-	appendHTTP(startTime, r.URL.Path, r.Method, status_code, tracer.SpanId,
+	appendHTTP(startTime, r.Method + " " + boneMux.GetRequestRoute(r), r.Method, status_code, tracer.SpanId,
 		tracer.ParentSpanId, isproblem, headers)
 }
 

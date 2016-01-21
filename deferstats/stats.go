@@ -12,7 +12,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/deferpanic/deferclient/deferclient"
+	"github.com/go-zoo/bone"
+
+	"github.com/betacraft/deferclient/deferclient"
 )
 
 // being DEPRECATED
@@ -96,7 +98,7 @@ type Client struct {
 }
 
 // NewClient instantiates and returns a new client
-func NewClient(token string) *Client {
+func NewClient(token string, mux *bone.Mux) *Client {
 
 	ds := &Client{
 		statsFrequency: 60,
@@ -123,6 +125,7 @@ func NewClient(token string) *Client {
 	ds.BaseClient.Environment = ds.environment
 	ds.BaseClient.AppGroup = ds.appGroup
 	ds.BaseClient.NoPost = ds.noPost
+	boneMux = mux
 
 	return ds
 }
